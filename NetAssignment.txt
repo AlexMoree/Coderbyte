@@ -1,0 +1,46 @@
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        string[] resumes = new string[] {
+            // ... array of resumes ...
+        };
+
+        // Start timing the execution
+        Stopwatch stopwatch = Stopwatch.StartNew();
+
+        // Process resumes in parallel using PLINQ
+        var results = resumes.AsParallel().Select(resume => FindSkillsinResume(resume)).ToList();
+
+        // Stop the timer and print the elapsed time
+        stopwatch.Stop();
+        Console.WriteLine($"Execution time: {stopwatch.ElapsedMilliseconds} ms");
+
+        // Print the results
+        for (int i = 0; i < results.Count; i++)
+        {
+            Console.WriteLine($"Resume {i + 1} skills: {string.Join(", ", results[i])}");
+        }
+    }
+
+    public static string[] FindSkillsinResume(string resume)
+    {
+        // Simulate the 200ms processing time
+        Task.Delay(200).Wait();
+
+        // Generate a random list of skills for demonstration purposes
+        Random random = new Random();
+        int numSkills = random.Next(5, 15);
+        string[] skills = new string[numSkills];
+        for (int i = 0; i < numSkills; i++)
+        {
+            skills[i] = $"Skill {random.Next(1, 20)}";
+        }
+        return skills;
+    }
+}
